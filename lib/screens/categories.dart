@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/data/dummy_data.dart';
+import 'package:meal_app/models/category.dart';
 import 'package:meal_app/screens/meals.dart';
 import 'package:meal_app/widgets/category_grid_item.dart';
 
@@ -8,11 +9,18 @@ class CategoriesSreen extends StatelessWidget {
 
   const CategoriesSreen({super.key});
 
-  void _selectCategory(BuildContext context)  {
+  
+  // this is function for open nex screen
+  void _selectCategory(BuildContext context, Category category)  {
+
+    final filteredMeals = dummyMeals
+        .where((meal) => meal.categories.contains(category.id))
+        .toList(); 
+
     Navigator.of(context).push(MaterialPageRoute(
       builder: (ctx) => MealsScreen(
-        title: "come title",
-        meals: []),
+        title: category.title,
+        meals: filteredMeals),
       )); // or Navigator.push(context, route)
   }
 
@@ -32,8 +40,9 @@ class CategoriesSreen extends StatelessWidget {
         children: [
           // availableCategories.map((category) => )
           for (final category in availableCategories) 
+          // init here for open nex display
             CategoryGridItem(category: category, onSelectCategory: () {
-              _selectCategory(context);
+              _selectCategory(context, category); // here is init this function 
             },)
             
         ],

@@ -10,16 +10,17 @@ class CategoryGridItem extends StatelessWidget {
       required this.category,
       required this.onSelectCategory,
     });
-
+  
   final Category category;
+  // this how we open screen method // get function
   final void Function() onSelectCategory;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell( //  help change state if we tap item
+    return InkWell( //  help change state if we tap item (like add click listeners)
       splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(16),
-      onTap: onSelectCategory,
+      onTap: onSelectCategory, // invoke for open nex screen
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
