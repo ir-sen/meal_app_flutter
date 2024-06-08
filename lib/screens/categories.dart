@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/data/dummy_data.dart';
 import 'package:meal_app/models/category.dart';
+import 'package:meal_app/models/meal.dart';
 import 'package:meal_app/screens/meals.dart';
 import 'package:meal_app/widgets/category_grid_item.dart';
 
 
 class CategoriesSreen extends StatelessWidget {
 
-  const CategoriesSreen({super.key});
+  const CategoriesSreen({
+    super.key,
+    required this.onToggleFavorite,
+    });
 
+  final void Function(Meal meal) onToggleFavorite;
   
   // this is function for open nex screen
   void _selectCategory(BuildContext context, Category category)  {
@@ -20,7 +25,9 @@ class CategoriesSreen extends StatelessWidget {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (ctx) => MealsScreen(
         title: category.title,
-        meals: filteredMeals),
+        meals: filteredMeals,
+        onToggleFavorite: onToggleFavorite,
+        ),
       )); // or Navigator.push(context, route)
   }
 
