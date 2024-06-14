@@ -11,14 +11,17 @@ class CategoriesSreen extends StatelessWidget {
   const CategoriesSreen({
     super.key,
     required this.onToggleFavorite,
+    required this.avalibleMeals,
     });
 
   final void Function(Meal meal) onToggleFavorite;
+
+  final List<Meal> avalibleMeals;
   
   // this is function for open nex screen
   void _selectCategory(BuildContext context, Category category)  {
 
-    final filteredMeals = dummyMeals
+    final filteredMeals = avalibleMeals
         .where((meal) => meal.categories.contains(category.id))
         .toList(); 
 
