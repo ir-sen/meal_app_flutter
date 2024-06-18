@@ -32,7 +32,8 @@ class MealDetailsScreen extends StatelessWidget {
               Image.network(meal.imageUrl,
               height: 300,
               width: double.infinity,
-              fit: BoxFit.cover),
+              fit: BoxFit.cover,
+              ),
               const SizedBox(height: 14,),
               Text('Ingredients', style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 color: Theme.of(context).colorScheme.primary,

@@ -12,9 +12,11 @@ enum Filter {
 class FiltersScreen extends StatefulWidget {
   const FiltersScreen({
     super.key,
+    // every time get save state swicher
     required this.currentpFilters,
     });
 
+  // this for saving state change 
   final Map<Filter, bool> currentpFilters;
 
   @override
@@ -29,6 +31,7 @@ class _FiltersScreen extends State<FiltersScreen> {
   var _vegetarianFilterSet = false;
   var _veganFilterSet = false;
 
+  // init saving state
   @override
   void initState() {
     super.initState();

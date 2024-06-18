@@ -31,7 +31,7 @@ class CategoriesSreen extends StatelessWidget {
         meals: filteredMeals,
         onToggleFavorite: onToggleFavorite,
         ),
-      )); // or Navigator.push(context, route)
+      ),); // or Navigator.push(context, route)
   }
 
   @override
