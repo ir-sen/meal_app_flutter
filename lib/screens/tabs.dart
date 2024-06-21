@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meal_app/models/meal.dart';
+import 'package:meal_app/providers/filter_provider.dart';
 import 'package:meal_app/screens/categories.dart';
 import 'package:meal_app/screens/filters.dart';
 import 'package:meal_app/screens/meals.dart';
 import 'package:meal_app/widgets/main_drawer.dart';
 import 'package:meal_app/providers/meals_provider.dart';
+import 'package:meal_app/providers/favatites_provider.dart'; 
 
 
 const kInitialFilters = {
@@ -30,31 +32,25 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   // create this list for save fovorites
   final List<Meal> _favoriteMeals = [];
 
-  Map<Filter, bool> _selectedFilters = kInitialFilters;
 
-  void _showInfoMessage(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
-    ));
-  }
 
-  // function for save favorite
-  void _toggleMealFavoriteStatus(Meal meal) {
-    final isExisting = _favoriteMeals.contains(meal);
 
-    if (isExisting) {
-      setState(() {
-        _favoriteMeals.remove(meal);
-      });
-      _showInfoMessage('Meal is no longer a favorite');
-    } else {
-      setState(() {
-        _favoriteMeals.add(meal);
-        _showInfoMessage('Marked as a favorite');
-      });
-    }
-  }
+  // // function for save favorite
+  // void _toggleMealFavoriteStatus(Meal meal) {
+  //   final isExisting = _favoriteMeals.contains(meal);
+
+  //   if (isExisting) {
+  //     setState(() {
+  //       _favoriteMeals.remove(meal);
+  //     });
+  //     _showInfoMessage('Meal is no longer a favorite');
+  //   } else {
+  //     setState(() {
+  //       _favoriteMeals.add(meal);
+  //       _showInfoMessage('Marked as a favorite');
+  //     });
+  //   }
+  // }
 
   void _selectPage(int index) {
     setState(() {
@@ -65,17 +61,12 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   void _setScreen(String indentifier) async {
     Navigator.of(context).pop();
     if (indentifier == 'filters') {
-      final result = await Navigator.of(context).push<Map<Filter, bool>>(
+      await Navigator.of(context).push<Map<Filter, bool>>(
         MaterialPageRoute(
-          builder: (ctx) => FiltersScreen(
-            currentpFilters: _selectedFilters,
-          ),
+          builder: (ctx) => const FiltersScreen(),
         ),
       );  
       
-      setState(() {
-        _selectedFilters = result ?? kInitialFilters;
-      });
       
     }
   }
@@ -83,21 +74,21 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     final meals = ref.watch(mealsProvider);
-
+    final activeFilters = ref.watch(filtersProvider);
     final availableMeals =  meals.where((meal) {
-      if (_selectedFilters[Filter.glutternFree]! && !meal.isGlutenFree){
+      if (activeFilters[Filter.glutternFree]! && !meal.isGlutenFree){
         return false;
       }
 
-      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree){
+      if (activeFilters[Filter.lactoseFree]! && !meal.isLactoseFree){
         return false;
       }
 
-      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian){
+      if (activeFilters[Filter.vegetarian]! && !meal.isVegetarian){
         return false;
       }
 
-      if (_selectedFilters[Filter.vegan]! && !meal.isVegan){
+      if (activeFilters[Filter.vegan]! && !meal.isVegan){
         return false;
       }
       
@@ -107,15 +98,15 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
     // triger for function invoke
     Widget activePage = CategoriesSreen(
-      onToggleFavorite: _toggleMealFavoriteStatus,
       avalibleMeals: availableMeals,
     );
     var activePageTitle = 'Categories';
 
     if (_selectedPageIndex == 1) {
+      final favoriteMeals = ref.watch(favoriteMealsProvider);
+
       activePage = MealsScreen(
         meals: _favoriteMeals,
-        onToggleFavorite: _toggleMealFavoriteStatus,
       );
       activePageTitle = 'Your Favorites';
     }

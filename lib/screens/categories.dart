@@ -10,11 +10,10 @@ class CategoriesSreen extends StatelessWidget {
 
   const CategoriesSreen({
     super.key,
-    required this.onToggleFavorite,
     required this.avalibleMeals,
     });
 
-  final void Function(Meal meal) onToggleFavorite;
+
 
   final List<Meal> avalibleMeals;
   
@@ -29,7 +28,6 @@ class CategoriesSreen extends StatelessWidget {
       builder: (ctx) => MealsScreen(
         title: category.title,
         meals: filteredMeals,
-        onToggleFavorite: onToggleFavorite,
         ),
       ),); // or Navigator.push(context, route)
   }
